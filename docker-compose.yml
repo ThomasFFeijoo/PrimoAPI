@@ -1,5 +1,12 @@
 version: '3.4'
 
+networks: 
+  primoapi-network:
+    driver: bridge
+    ipam:
+      driver: default
+
+
 services:
   primoapi:
     container_name: primoapi
@@ -11,3 +18,18 @@ services:
       - 8000:8000
     volumes: 
       - ./primoapi:/primoapi
+    networks: 
+      - primoapi-network
+  
+  primoapi-db:
+    container_name: primoapi-db
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./database_data:/var/lib/mysql
+    networks: 
+      - primoapi-network
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: primoapi

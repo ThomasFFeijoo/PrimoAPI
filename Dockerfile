@@ -1,5 +1,11 @@
 FROM php:8.0-fpm-alpine3.14
 
+RUN docker-php-ext-install \
+        mysqli \
+        pdo \
+        pdo_mysql \
+    && docker-php-ext-enable pdo_mysql
+
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 VOLUME /primoapi
